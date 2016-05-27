@@ -20,11 +20,11 @@ package main
 import "github.com/d4l3k/bypass"
 
 func main() {
-	c := make(chan int, 10)
-	c <- 1
-	c <- 2
+  c := make(chan int, 10)
+  c <- 1
+  c <- 2
   c <- 3
-	out := bypass.WrapChan(c).Elems().([]int)
+  out := bypass.WrapChan(c).Elems().([]int)
   fmt.Printf("%#v\n", out)
   // Expected: []int{1, 2, 3}
 }
