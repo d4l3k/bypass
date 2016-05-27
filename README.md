@@ -11,6 +11,7 @@ parts of go objects.
 ```bash
 $ go get -u github.com/d4l3k/bypass
 ```
+Note: bypass only supports Go 1.5+.
 
 ## Example
 
