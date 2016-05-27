@@ -6,6 +6,30 @@ parts of go objects.
 * Fetches elements of a channel without modifying it
 * Allows reflect to be used on unexported fields
 
+## Installation
+
+```bash
+$ go get -u github.com/d4l3k/bypass
+```
+
+## Example
+
+```go
+package main
+
+import "github.com/d4l3k/bypass"
+
+func main() {
+	c := make(chan int, 10)
+	c <- 1
+	c <- 2
+  c <- 3
+	out := bypass.WrapChan(c).Elems().([]int)
+  fmt.Printf("%#v\n", out)
+  // Expected: []int{1, 2, 3}
+}
+```
+
 ## How to access private methods
 
 https://sitano.github.io/2016/04/28/golang-private/
