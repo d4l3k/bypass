@@ -1,4 +1,4 @@
-# bypass [![GoDoc](https://godoc.org/github.com/d4l3k/bypass?status.svg)](https://godoc.org/github.com/d4l3k/bypass)
+# bypass [![GoDoc](https://godoc.org/github.com/d4l3k/bypass?status.svg)](https://godoc.org/github.com/d4l3k/bypass) [![Build Status](https://travis-ci.org/d4l3k/bypass.svg?branch=master)](https://travis-ci.org/d4l3k/bypass) [![Coverage Status](https://coveralls.io/repos/github/d4l3k/bypass/badge.svg?branch=master)](https://coveralls.io/github/d4l3k/bypass?branch=master)
 
 bypass is an incredibly unsafe Go package that allows you to inspect private
 parts of go objects.
