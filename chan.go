@@ -8,45 +8,13 @@ import (
 	_ "unsafe"
 )
 
-const locked uintptr = 1
-
-type hchan struct {
-	qcount   uint           // total data in the queue
-	dataqsiz uint           // size of the circular queue
-	buf      unsafe.Pointer // points to an array of dataqsiz elements
-	elemsize uint16
-	closed   uint32
-	elemtype uintptr // *_type // element type
-	sendx    uint    // send index
-	recvx    uint    // receive index
-	recvq    waitq   // list of recv waiters
-	sendq    waitq   // list of send waiters
-	lock     mutex
-}
-
-type waitq struct {
-	first uintptr // *sudog
-	last  uintptr // *sudog
-}
-
-type mutex struct {
-	// Futex-based impl treats it as uint32 key,
-	// while sema-based impl as M* waitm.
-	// Used to be a union, but unions break precise GC.
-	key uintptr
-}
-
-//go:linkname lock runtime.lock
-func lock(l *mutex)
-
-//go:linkname unlock runtime.unlock
-func unlock(l *mutex)
-
 type Chan struct {
 	hchan *hchan
 	v     reflect.Value
 }
 
+// WrapChan wraps a standard channel in a bypass.Chan so that it can be
+// modified in strange ways.
 func WrapChan(c interface{}) *Chan {
 	v := reflect.ValueOf(c)
 	vt := v.Type()
@@ -65,6 +33,7 @@ func WrapChan(c interface{}) *Chan {
 	}
 }
 
+// Elems returns a slice with all of the elements in the channel.
 func (c *Chan) Elems() interface{} {
 	count := c.v.Len()
 	elemType := c.v.Type().Elem()
@@ -84,10 +53,12 @@ func (c *Chan) Elems() interface{} {
 	return arr.Interface()
 }
 
+// Lock locks the channel so nothing can write to it until it is unlocked.
 func (c *Chan) Lock() {
 	lock(&c.hchan.lock)
 }
 
+// Unlock unlocks the channel.
 func (c *Chan) Unlock() {
 	unlock(&c.hchan.lock)
 }
